@@ -1,22 +1,20 @@
 import streamlit as st
 import spacy
-import subprocess
+from spacy.cli import download
 
 @st.cache_resource
 def load_model():
     try:
-        # Try loading the model
         return spacy.load("en_core_web_md")
     except OSError:
-        # If model is not found, download it
+        # Download properly using spacy's internal CLI
         with st.spinner("Downloading spaCy model..."):
-            subprocess.run(["python", "-m", "spacy", "download", "en_core_web_md"])
+            download("en_core_web_md")
         return spacy.load("en_core_web_md")
 
 # Load model
 nlp = load_model()
 
-# Example usage
 st.title("ML Chatbot 🤖")
 st.write("This is a demo app using spaCy model `en_core_web_md`.")
 
